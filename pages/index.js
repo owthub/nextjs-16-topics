@@ -1,7 +1,7 @@
-import BarCart from "@/components/BarChart";
+import PieChart from "@/components/PieChart";
 
 export default function Home() {
   return (
-    <BarCart />
+    <PieChart />
   );
 }
