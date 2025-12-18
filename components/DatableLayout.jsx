@@ -54,25 +54,25 @@ export default function DatatableLayout(){
     );
 
     return <>
-      <h2>Tabular Data</h2>
+        <div className="flex flex-wrap justify-between items-center gap-4">
+            <input
+                type="text"
+                placeholder="Search..."
+                className="border rounded-xl px-4 py-2 w-64 shadow-sm
+                focus:outline-none focus:ring-2 focus:ring-purple-500"
+                value={filterText}
+                onChange={(e) => setFilterText(e.target.value)}
+            /> 
 
-      <input
-            type="text"
-            placeholder="Search..."
-            className="border rounded-xl px-4 py-2 w-64 shadow-sm
-            focus:outline-none focus:ring-2 focus:ring-purple-500"
-            value={filterText}
-            onChange={(e) => setFilterText(e.target.value)}
-        /> 
-
-      <DataTable
-        columns={columns}
-        data={filteredData}
-        highlightOnHover
-        pagination
-        striped
-        responsive
-        customStyles={ customStyles }
-        />
+            <DataTable
+                columns={columns}
+                data={filteredData}
+                highlightOnHover
+                pagination
+                striped
+                responsive
+                customStyles={ customStyles }
+            />
+        </div>
     </>
 }
