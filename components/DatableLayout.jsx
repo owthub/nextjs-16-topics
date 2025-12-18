@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import DataTable from "react-data-table-component"
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 
 export default function DatatableLayout(){
 
@@ -53,8 +55,61 @@ export default function DatatableLayout(){
         JSON.stringify(item).toLowerCase().includes(filterText.toLowerCase())
     );
 
+    const handleDownloadCSVButton = () => {
+        
+        if (!filteredData.length) return;
+
+        const worksheet = XLSX.utils.json_to_sheet(filteredData);
+        const csv = XLSX.utils.sheet_to_csv(worksheet);
+        const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+
+        saveAs(blob, 'table-data.csv');
+    }
+
+    const handleDownloadExcelButton = () => {
+        
+        if (!filteredData.length) return;
+
+        const worksheet = XLSX.utils.json_to_sheet(filteredData);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Report");
+
+        const excelBuffer = XLSX.write(workbook, {
+            bookType: "xlsx",
+            type: "array",
+        });
+
+        const blob = new Blob(
+            [excelBuffer],
+            {
+            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            }
+        );
+
+        saveAs(blob, 'table-data.xlsx');
+    }
+
     return <>
         <div className="flex flex-wrap justify-between items-center gap-4">
+
+            <div className="flex gap-3">
+                <button
+                    onClick={ handleDownloadCSVButton }
+                    className="px-4 py-2 rounded-lg text-white text-sm font-medium
+                    bg-blue-600 hover:bg-blue-700 transition"
+                >
+                    Download CSV
+                </button>
+
+                <button
+                    onClick={ handleDownloadExcelButton }
+                    className="px-4 py-2 rounded-lg text-white text-sm font-medium
+                    bg-green-600 hover:bg-green-700 transition"
+                >
+                    Download Excel
+                </button>
+            </div>
+
             <input
                 type="text"
                 placeholder="Search..."

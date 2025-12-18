@@ -1,4 +1,6 @@
-import DatatableLayout from "@/components/DatableLayout";
+import dynamic from "next/dynamic";
+
+const DatatableLayout = dynamic( () => import('@/components/DatableLayout'), { ssr: false } )
 
 export default function Home() {
   return (
